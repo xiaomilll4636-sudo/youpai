@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Clock, CheckCircle, XCircle, ChevronRight, Star } from 'lucide-react'
+import { Clock, CheckCircle, XCircle, ChevronRight, Star, MapPin } from 'lucide-react'
 import { orderApi } from '../../api'
 import { useAuthStore } from '../../store/auth'
 import type { Order } from '../../types/housekeeping'
@@ -153,23 +153,36 @@ function getMockOrders(tab: OrderTab): Order[] {
     {
       id: '1', orderNo: 'YP202401010001', userId: 'u1', housekeeperId: 'h1',
       serviceTypeId: '1', serviceAddress: '北京市朝阳区建国路88号',
-      serviceTime: new Date('2024-01-15 09:00:00'), duration: 3,
-      totalAmount: 150, status: 'completed',
-      createdAt: new Date(), serviceType: { id: '1', name: '日常保洁', icon: '🏠', description: '', sortOrder: 1 }
+      serviceTime: new Date('2024-03-15 09:00:00'), duration: 3,
+      totalAmount: 156, status: 'completed',
+      createdAt: new Date(), 
+      serviceType: { id: '1', name: '日常保洁', icon: '🏠', description: '', sortOrder: 1 },
+      housekeeper: { 
+        id: 'h1', userId: 'w1', realName: '王大姐', rating: 4.8, status: 'verified', experience: 5, priceMin: 50, priceMax: 80, idCard: '', 
+        certifications: [], createdAt: new Date(), avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=王',
+        skills: ['日常保洁', '做饭'], orderCount: 120
+      }
     },
     {
       id: '2', orderNo: 'YP202401010002', userId: 'u1', housekeeperId: 'h2',
       serviceTypeId: '2', serviceAddress: '北京市海淀区中关村大街1号',
-      serviceTime: new Date('2024-01-16 14:00:00'), duration: 4,
+      serviceTime: new Date('2024-03-16 14:00:00'), duration: 4,
       totalAmount: 320, status: 'in_service',
-      createdAt: new Date(), serviceType: { id: '2', name: '深度清洁', icon: '✨', description: '', sortOrder: 2 }
+      createdAt: new Date(), 
+      serviceType: { id: '2', name: '深度清洁', icon: '✨', description: '', sortOrder: 2 },
+      housekeeper: { 
+        id: 'h2', userId: 'w2', realName: '李阿姨', rating: 4.9, status: 'verified', experience: 8, priceMin: 80, priceMax: 120, idCard: '', 
+        certifications: [], createdAt: new Date(), avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=李',
+        skills: ['深度清洁', '收纳'], orderCount: 250
+      }
     },
     {
       id: '3', orderNo: 'YP202401010003', userId: 'u1', housekeeperId: 'h3',
       serviceTypeId: '4', serviceAddress: '北京市西城区金融街10号',
-      serviceTime: new Date('2024-01-17 10:00:00'), duration: 2,
+      serviceTime: new Date('2024-03-18 10:00:00'), duration: 2,
       totalAmount: 160, status: 'pending_payment',
-      createdAt: new Date(), serviceType: { id: '4', name: '家电维修', icon: '🔧', description: '', sortOrder: 4 }
+      createdAt: new Date(), 
+      serviceType: { id: '4', name: '家电维修', icon: '🔧', description: '', sortOrder: 4 }
     },
   ]
 

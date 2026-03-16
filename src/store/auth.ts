@@ -7,6 +7,9 @@ export interface User {
   nickname: string
   avatar?: string
   token?: string
+  balance?: number
+  points?: number
+  couponCount?: number
 }
 
 interface AuthState {

@@ -3,8 +3,20 @@ export interface User {
   phone: string
   nickname?: string
   avatar?: string
+  balance?: number
+  points?: number
+  couponCount?: number
   status: 'active' | 'inactive'
   createdAt: Date
+}
+
+export interface Coupon {
+  id: string
+  title: string
+  amount: number
+  minAmount: number
+  expiryDate: Date
+  status: 'unused' | 'used' | 'expired'
 }
 
 export interface Housekeeper {
