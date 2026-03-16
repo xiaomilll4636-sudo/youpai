@@ -1,6 +1,21 @@
 [build]
-  command = "npm run build"
+  command = "npm install && npm run build && cd server && npm install --production"
   publish = "dist"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["server/**"]
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/api/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/health"
+  to = "/.netlify/functions/api/health"
+  status = 200
 
 [[redirects]]
   from = "/*"
