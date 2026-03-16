@@ -1,0 +1,57 @@
+.housekeeper-list {
+  padding: var(--spacing-2xl) 0;
+  background: var(--color-background);
+}
+
+.housekeeper-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.housekeeper-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-xl);
+}
+
+.housekeeper-list-title {
+  text-align: left;
+}
+
+.housekeeper-list-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.housekeeper-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.housekeeper-list-footer {
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .housekeeper-list-header {
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .housekeeper-list-title {
+    text-align: center;
+  }
+
+  .housekeeper-list-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .housekeeper-grid {
+    grid-template-columns: 1fr;
+  }
+}

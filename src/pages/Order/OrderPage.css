@@ -1,0 +1,209 @@
+.order-page {
+  min-height: 100vh;
+  background: var(--color-background);
+  padding-top: 72px;
+}
+
+.order-header {
+  background: var(--color-surface);
+  padding: var(--spacing-lg);
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.order-header h1 {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.order-tabs {
+  display: flex;
+  background: var(--color-surface);
+  padding: 0 var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+  overflow-x: auto;
+}
+
+.order-tab {
+  flex: 1;
+  padding: var(--spacing-md);
+  background: none;
+  border: none;
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  transition: all var(--transition-normal);
+  font-weight: 500;
+}
+
+.order-tab:hover {
+  color: var(--color-primary-light);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.order-tab.active {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.order-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: var(--radius-full) var(--radius-full) 0 0;
+  box-shadow: 0 -2px 8px rgba(59, 130, 246, 0.4);
+}
+
+.order-list {
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.order-card {
+  background: var(--color-surface-solid);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  animation: fadeIn 0.4s ease-out;
+}
+
+.order-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg), 0 10px 20px -5px rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.order-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: rgba(248, 250, 252, 0.5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.order-no {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.order-status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--color-primary-dark);
+}
+
+.order-card-body {
+  padding: var(--spacing-lg);
+}
+
+.order-service {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  background: rgba(248, 250, 252, 0.5);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.service-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+
+.service-info h3 {
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.service-info p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.order-details {
+  display: flex;
+  gap: var(--spacing-xl);
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.detail-item .label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.detail-item .value {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+}
+
+.order-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.order-amount {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.order-amount .price {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.order-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.empty {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  color: var(--color-text-muted);
+}
+
+.loading {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  color: var(--color-text-muted);
+}
