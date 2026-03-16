@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import { Header } from './components/Header/Header'
 import { Hero } from './components/Hero/Hero'
 import { Services } from './components/Services/Services'
@@ -9,6 +9,9 @@ import { RegisterModal } from './components/Auth/RegisterModal'
 import { Footer } from './components/Footer/Footer'
 import { useAuthStore } from './store/auth'
 import type { ServiceType } from './types/housekeeping'
+import { OrderPage } from './pages/Order/OrderPage'
+import { OrderDetailPage } from './pages/Order/OrderDetailPage'
+import { ProfilePage } from './pages/Profile/ProfilePage'
 import './styles/global.css'
 
 const mockServices: ServiceType[] = [
@@ -20,11 +23,22 @@ const mockServices: ServiceType[] = [
   { id: '6', name: '钟点工', icon: '⏰', description: '临时清洁、做饭、跑腿等灵活服务', sortOrder: 6 },
 ]
 
+function HomePage({ onBookNow, onServiceSelect }: { onBookNow: () => void, onServiceSelect: (s: ServiceType) => void }) {
+  return (
+    <>
+      <Hero onBookNow={onBookNow} />
+      <Services services={mockServices} onSelect={onServiceSelect} />
+      <PlatformGuarantee />
+    </>
+  )
+}
+
 function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false)
   const [selectedService, setSelectedService] = useState<ServiceType | undefined>()
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
+  const location = useLocation()
   
   const { user, isLoggedIn, login, logout } = useAuthStore()
 
@@ -42,23 +56,18 @@ function App() {
     alert('预约成功！我们会尽快与您联系确认。')
   }
 
-  const handleLogin = (userData: { phone: string; nickname: string }) => {
-    login({
-      id: Date.now().toString(),
-      phone: userData.phone,
-      nickname: userData.nickname
-    })
+  const handleLogin = (userData: any) => {
+    login(userData)
     setIsLoginOpen(false)
   }
 
-  const handleRegister = (userData: { phone: string; nickname: string }) => {
-    login({
-      id: Date.now().toString(),
-      phone: userData.phone,
-      nickname: userData.nickname
-    })
+  const handleRegister = (userData: any) => {
+    login(userData)
     setIsRegisterOpen(false)
   }
+
+  // 不是首页时显示简版 Header 或调整内距
+  const isHome = location.pathname === '/'
 
   return (
     <div className="app">
@@ -69,10 +78,13 @@ function App() {
         onLogout={logout}
       />
       
-      <main>
-        <Hero onBookNow={handleBookNow} />
-        <Services services={mockServices} onSelect={handleServiceSelect} />
-        <PlatformGuarantee />
+      <main className={!isHome ? 'page-content' : ''}>
+        <Routes>
+          <Route path="/" element={<HomePage onBookNow={handleBookNow} onServiceSelect={handleServiceSelect} />} />
+          <Route path="/orders" element={<OrderPage />} />
+          <Route path="/orders/:id" element={<OrderDetailPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+        </Routes>
       </main>
       
       <Footer />
