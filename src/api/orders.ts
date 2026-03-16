@@ -20,8 +20,13 @@ export interface OrderListParams {
 }
 
 export const orderApi = {
+  // 需登录的内部创单
   create: (data: CreateOrderParams) =>
     request.post<Order>('/orders', data),
+
+  // 免登录的公共免密建单(含静默注册)
+  createPublic: (data: any) =>
+    request.post<Order>('/orders/public', data),
 
   getList: (params?: OrderListParams) =>
     request.get<{ list: Order[]; total: number }>('/orders', { params }),

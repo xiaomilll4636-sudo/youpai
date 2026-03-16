@@ -172,6 +172,109 @@ router.post('/',
   }
 );
 
+// 公共预约接口 (免登录静默留资)
+router.post('/public', [
+  body('serviceTypeId').notEmpty(),
+  body('address').notEmpty(),
+  body('contactPhone').matches(/^1[3-9]\d{9}$/),
+  body('contactName').notEmpty(),
+  body('date').notEmpty(),
+  body('time').notEmpty(),
+  body('duration').isInt({ min: 1 })
+], async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new AppError('请检查预约信息填写是否正确', 400));
+  }
+
+  const client = await db.pool.connect();
+  try {
+    const { 
+      serviceTypeId, date, time, duration, 
+      address, contactPhone, contactName, remark 
+    } = req.body;
+
+    await client.query('BEGIN');
+
+    // 1. 静默建档：检查手机号是否存在
+    let userId;
+    const userCheck = await client.query('SELECT id FROM users WHERE phone = $1', [contactPhone]);
+    
+    if (userCheck.rows.length > 0) {
+      userId = userCheck.rows[0].id;
+      // 可选：更新最新称呼
+      await client.query('UPDATE users SET nickname = $1 WHERE id = $2 AND nickname IS NULL', [contactName, userId]);
+    } else {
+      // 自动静默注册
+      const newUser = await client.query(
+        'INSERT INTO users (phone, nickname, status) VALUES ($1, $2, $3) RETURNING id',
+        [contactPhone, contactName, 'active']
+      );
+      userId = newUser.rows[0].id;
+    }
+
+    // 2. 获取服务单价计算总价
+    const serviceType = await client.query(
+      'SELECT base_price FROM service_types WHERE id = $1',
+      [serviceTypeId]
+    );
+
+    if (serviceType.rows.length === 0) {
+      throw new AppError('服务类型不存在', 404);
+    }
+
+    const unitPrice = serviceType.rows[0].base_price;
+    const totalAmount = unitPrice * duration;
+    
+    const orderNo = generateOrderNo();
+
+    // 3. 插入订单表
+    const orderResult = await client.query(
+      `INSERT INTO orders (
+        order_no, user_id, service_type_id, status,
+        service_address, service_date, service_time,
+        duration, unit_price, total_amount, final_amount, remark
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+      RETURNING *`,
+      [
+        orderNo, userId, serviceTypeId, 'pending_payment',
+        address, date, time,
+        duration, unitPrice, totalAmount, totalAmount, remark || null
+      ]
+    );
+
+    const orderId = orderResult.rows[0].id;
+
+    // 4. 记录流水日志
+    await client.query(
+      `INSERT INTO order_logs (order_id, action, new_status, remark)
+       VALUES ($1, $2, $3, $4)`,
+      [orderId, 'create', 'pending_payment', '客户通过公共前端（免密留资）建单']
+    );
+
+    await client.query('COMMIT');
+
+    // 触发系统消息，提醒业务员接单跟进
+    notifyAdmins(NotificationTypes.NEW_ORDER, { 
+      orderId, 
+      orderNo, 
+      contactName, 
+      contactPhone 
+    });
+
+    res.status(201).json({
+      success: true,
+      data: orderResult.rows[0]
+    });
+
+  } catch (error) {
+    await client.query('ROLLBACK');
+    next(error);
+  } finally {
+    client.release();
+  }
+});
+
 router.post('/:id/cancel', auth, async (req, res, next) => {
   try {
     const { id } = req.params;

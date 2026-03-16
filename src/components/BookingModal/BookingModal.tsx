@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { X, Calendar, Clock, User, Phone, MessageSquare, MapPin } from 'lucide-react'
 import { AddressPicker } from '../AddressPicker/AddressPicker'
 import type { ServiceType, TimeSlot } from '../../types/housekeeping'
@@ -38,6 +38,16 @@ export function BookingModal({ isOpen, onClose, service, onSubmit }: BookingModa
     contactPhone: '',
     remark: ''
   })
+
+  // 同步 service 变化到表单
+  useEffect(() => {
+    if (isOpen) {
+      setFormData(prev => ({
+        ...prev,
+        serviceTypeId: service?.id || ''
+      }))
+    }
+  }, [isOpen, service])
 
   const timeSlots: TimeSlot[] = [
     { time: '08:00', available: true },

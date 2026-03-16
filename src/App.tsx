@@ -13,6 +13,7 @@ import type { ServiceType } from './types/housekeeping'
 import { OrderPage } from './pages/Order/OrderPage'
 import { OrderDetailPage } from './pages/Order/OrderDetailPage'
 import { ProfilePage } from './pages/Profile/ProfilePage'
+import { orderApi } from './api/orders'
 import './styles/global.css'
 
 const mockServices: ServiceType[] = [
@@ -52,9 +53,24 @@ function App() {
     setIsBookingOpen(true)
   }
 
-  const handleBookingSubmit = (data: BookingFormData) => {
-    console.log('Booking submitted:', data)
-    alert('预约成功！我们会尽快与您联系确认。')
+  const handleBookingSubmit = async (data: BookingFormData) => {
+    try {
+      await orderApi.createPublic({
+        serviceTypeId: data.serviceTypeId,
+        date: data.date,
+        time: data.time,
+        duration: data.duration,
+        address: data.address,
+        detailAddress: data.detailAddress,
+        contactName: data.contactName,
+        contactPhone: data.contactPhone,
+        remark: data.remark
+      })
+      alert('预约成功！客服人员收到您的需求后将尽快与您致电确认细节。')
+    } catch (error: any) {
+      alert(error.message || '预约提交失败，请重试')
+      console.error('Booking failed:', error)
+    }
   }
 
   const handleLogin = (userData: any) => {
