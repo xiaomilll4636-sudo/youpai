@@ -23,7 +23,7 @@ export function Hero({ onBookNow }: HeroProps) {
         <div className="hero-content">
           <div className="hero-badge animate-fadeIn" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span className="badge badge-primary">专业家政服务平台</span>
-            <span className="badge" style={{ background: '#FF4D4F', color: 'white', borderRadius: '4px', fontSize: '10px' }}>V2.0</span>
+            <span className="badge" style={{ background: '#FF4D4F', color: 'white', borderRadius: '4px', fontSize: '10px' }}>V2.0-23:45</span>
           </div>
           
           <h1 className="hero-title animate-slideUp">
