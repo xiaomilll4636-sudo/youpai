@@ -11,9 +11,7 @@ import {
   Truck,
   CheckCircle2,
   Package,
-  ArrowRight
 } from 'lucide-react'
-import { orderApi } from '../../api'
 import type { Order } from '../../types/housekeeping'
 import './OrderDetailPage.css'
 
